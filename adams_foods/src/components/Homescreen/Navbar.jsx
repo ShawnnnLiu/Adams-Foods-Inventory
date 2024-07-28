@@ -1,57 +1,96 @@
 import React from 'react';
-import { Image, Box, Flex, Stack, HStack, Link, IconButton, useDisclosure, Drawer, Button, DrawerOverlay, DrawerContent, DrawerHeader, DrawerBody, DrawerFooter, List } from '@chakra-ui/react';
+import { Input, Image, Box, Flex, Stack, HStack, Link, IconButton, useDisclosure, Drawer, Button, DrawerOverlay, DrawerContent, DrawerHeader, DrawerBody, DrawerFooter, List } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
+import {Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton,} from '@chakra-ui/react'
+import {FormControl, FormLabel, FormErrorMessage, FormHelperText} from '@chakra-ui/react'
 
-const ShowDrawer = ({ isOpen, onClose }) => {
+
+function UploadFile({ isOpen, onClose }) {
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    console.log(file);
+  };
+
+  return (
+    <>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Modal Title</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+          <FormControl >
+              <Box width="90%">
+                <Input bg='white' width="100%" type="input1" placeholder='Location'/>
+                <Input type="file" onChange={handleFileChange} />
+              </Box>
+          </FormControl>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme='blue' mr={3} >
+              Upload
+            </Button>
+            <Button variant='ghost' onClick={onClose}>Cancel</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
+  );
+}
+
+const ShowDrawer = ({ isOpen, onClose, onOpen, onUploadOpen }) => {
   return (
     <Drawer placement='left' onClose={onClose} isOpen={isOpen}>
       <DrawerOverlay />
       <DrawerContent>
-        <DrawerHeader borderBottomWidth='1px' >Basic Drawer</DrawerHeader>
-        <Stack direction="column" spacing={4}>
-            <Button bg='white' justifyContent="flex-start" >Show Map</Button>
-            <Button bg='white' justifyContent="flex-start" >Some Content</Button>
-            <Button bg='white' justifyContent="flex-start" >Upload File</Button>
+        <DrawerHeader borderBottomWidth='1px'>Other Actions</DrawerHeader>
+        <Stack direction="column" spacing={4} p={4}>
+          <Button bg='white' justifyContent="flex-start">Show Map</Button>
+          <Button bg='white' justifyContent="flex-start">Some Content</Button>
+          <Button bg='white' justifyContent="flex-start" onClick={onUploadOpen}>Upload File</Button>
         </Stack>
-
         <DrawerFooter justifyContent='center'>
           <Button bg='red.400'>Log Out</Button>
         </DrawerFooter>
       </DrawerContent>
-      
     </Drawer>
   );
 };
 
 const Navbar = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen: isDrawerOpen, onOpen: onDrawerOpen, onClose: onDrawerClose } = useDisclosure();
+  const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure();
 
   return (
-    <Box bg="white" px={4} w="100%" position="fixed" top={0} zIndex={1}>
-      <Flex h={16} alignItems="center" justifyContent="space-between">
-        <IconButton
-          size="md"
-          icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
-          aria-label="Open Menu"
-          display={{ md: 'none' }}
-          onClick={isOpen ? onClose : onOpen}
-        />
-        <HStack spacing={8} alignItems="center">
-          <Box>
-            <Button onClick={onOpen} bg="white" color="black" p={2}>
-              <HamburgerIcon w={6} h={6} />
-            </Button>
-          </Box>
-          <HStack as="nav" spacing={4} display={{ base: 'none', md: 'flex' }} justifyContent='center'>
-            <Image src="AdamsWings.png" alt="Adams Wings" height='50px'/>
+    <>
+      <Box bg="white" px={4} w="100%" position="fixed" top={0} zIndex={1}>
+        <Flex h={16} alignItems="center" justifyContent="space-between">
+          <IconButton
+            size="md"
+            icon={isDrawerOpen ? <CloseIcon /> : <HamburgerIcon />}
+            aria-label="Open Menu"
+            display={{ md: 'none' }}
+            onClick={isDrawerOpen ? onDrawerClose : onDrawerOpen}
+          />
+          <HStack spacing={8} alignItems="center">
+            <Box>
+              <Button onClick={onDrawerOpen} bg="white" color="black" p={2}>
+                <HamburgerIcon w={6} h={6} />
+              </Button>
+            </Box>
+            <HStack as="nav" spacing={4} display={{ base: 'none', md: 'flex' }} justifyContent='center'>
+              <Image src="AdamsWings.png" alt="Adams Wings" height='50px'/>
+            </HStack>
           </HStack>
-        </HStack>
-        <Flex alignItems="center">
-          <Link href="#" color="black" p={2}>Help</Link>
+          <Flex alignItems="center">
+            <Link href="#" color="black" p={2}>Help</Link>
+          </Flex>
         </Flex>
-      </Flex>
-      <ShowDrawer isOpen={isOpen} onClose={onClose} />
-    </Box>
+      </Box>
+      <ShowDrawer isOpen={isDrawerOpen} onClose={onDrawerClose} onUploadOpen={onModalOpen} />
+      <UploadFile isOpen={isModalOpen} onClose={onModalClose} />
+    </>
   );
 };
 
