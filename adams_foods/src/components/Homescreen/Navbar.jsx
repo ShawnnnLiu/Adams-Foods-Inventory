@@ -17,7 +17,7 @@ function UploadFile({ isOpen, onClose }) {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Modal Title</ModalHeader>
+          <ModalHeader>Title</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
           <FormControl >
@@ -38,6 +38,31 @@ function UploadFile({ isOpen, onClose }) {
     </>
   );
 }
+
+function OpenHelp({ isOpen, onClose }) {
+
+  return (
+    <>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Help</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+          
+          </ModalBody>
+          <ModalFooter>
+          
+            <Button variant='ghost' onClick={onClose}>Close</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
+  );
+}
+
+
+
 
 const ShowDrawer = ({ isOpen, onClose, onOpen, onUploadOpen }) => {
   return (
@@ -61,18 +86,13 @@ const ShowDrawer = ({ isOpen, onClose, onOpen, onUploadOpen }) => {
 const Navbar = () => {
   const { isOpen: isDrawerOpen, onOpen: onDrawerOpen, onClose: onDrawerClose } = useDisclosure();
   const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure();
+  const { isOpen: isHelpOpen, onOpen: onHelpOpen, onClose: onHelpClose } = useDisclosure();
 
   return (
     <>
       <Box bg="white" px={4} w="100%" position="fixed" top={0} zIndex={1}>
         <Flex h={16} alignItems="center" justifyContent="space-between">
-          <IconButton
-            size="md"
-            icon={isDrawerOpen ? <CloseIcon /> : <HamburgerIcon />}
-            aria-label="Open Menu"
-            display={{ md: 'none' }}
-            onClick={isDrawerOpen ? onDrawerClose : onDrawerOpen}
-          />
+          <IconButton size="md" icon={isDrawerOpen ? <CloseIcon /> : <HamburgerIcon />} aria-label="Open Menu" display={{ md: 'none' }} onClick={isDrawerOpen ? onDrawerClose : onDrawerOpen}/>
           <HStack spacing={8} alignItems="center">
             <Box>
               <Button onClick={onDrawerOpen} bg="white" color="black" p={2}>
@@ -84,12 +104,15 @@ const Navbar = () => {
             </HStack>
           </HStack>
           <Flex alignItems="center">
-            <Link href="#" color="black" p={2}>Help</Link>
+            <Button onClick={onHelpOpen} bg="white" color="black" p={2}>
+             Help
+            </Button>
           </Flex>
         </Flex>
       </Box>
       <ShowDrawer isOpen={isDrawerOpen} onClose={onDrawerClose} onUploadOpen={onModalOpen} />
       <UploadFile isOpen={isModalOpen} onClose={onModalClose} />
+      <OpenHelp isOpen={isHelpOpen} onClose={onHelpClose} />
     </>
   );
 };
