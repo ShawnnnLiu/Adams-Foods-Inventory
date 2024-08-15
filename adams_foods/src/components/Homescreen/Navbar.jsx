@@ -92,7 +92,6 @@ const Navbar = () => {
     <>
       <Box bg="white" px={4} w="100%" position="fixed" top={0} zIndex={1}>
         <Flex h={16} alignItems="center" justifyContent="space-between">
-          <IconButton size="md" icon={isDrawerOpen ? <CloseIcon /> : <HamburgerIcon />} aria-label="Open Menu" display={{ md: 'none' }} onClick={isDrawerOpen ? onDrawerClose : onDrawerOpen}/>
           <HStack spacing={8} alignItems="center">
             <Box>
               <Button onClick={onDrawerOpen} bg="white" color="black" p={2}>

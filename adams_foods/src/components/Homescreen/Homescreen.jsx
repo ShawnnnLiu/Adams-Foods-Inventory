@@ -14,11 +14,18 @@ const Homescreen = () => {
     const [input4, setInput4] = useState('');
     const [input5, setInput5] = useState('');
 
+    const [showTextarea, setShowTextarea] = useState(false);
+    const [textareaContent, setTextareaContent] = useState('');
+
+
     const handleFind = () => {
       console.log('Find:', { input1, input2, input3, input4, input5 });
+
+      setTextareaContent(`Input 1: ${input1}\nInput 2: ${input2}\nInput 3: ${input3}\nInput 4: ${input4}\nInput 5: ${input5}`);
+      setShowTextarea(true);
     };
 
-    const handleUpdateSubmit = () => {
+    const handleUpdateSubmit = () => {  
       console.log('Find:', { input1, input2, input3, input4, input5 });
     };
 
@@ -64,7 +71,9 @@ const Homescreen = () => {
 
         </Flex>
 
-        <Flex bg="lightblue" width="80%" height="85%" margin="10px" border='1px'></Flex>
+        <Flex bg="lightblue" width="50%" height="85%" margin="10px" border="1px" justifyContent="center" alignItems="center">
+          {showTextarea && (<Textarea bg="white" width="90%" height="80%" value={textareaContent} readOnly/>)}
+        </Flex>
       </Flex>
     </>
     );
